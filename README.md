@@ -1,2 +1,2 @@
-# examen
+# Examen
 Examen de conocimientos
