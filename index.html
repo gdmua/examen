@@ -1143,6 +1143,56 @@ doc.text(`Código de Verificación: ${codigoVerificacion}`, 105, yStart + 5, nul
 
 
 mostrarResultados = () => {
+
+    function mostrarResultados() {
+    const totalPreguntas = 50;
+    const formularioExamen = document.getElementById('formularioExamen');
+    const preguntas = formularioExamen.getElementsByClassName('question-card');
+    let respuestasCorrectas = 0;
+
+    
+    for (let i = 0; i < totalPreguntas; i++) {
+        const opciones = document.getElementsByName(`pregunta${i}`);
+        let respondida = false;
+
+        for (const opcion of opciones) {
+            if (opcion.checked) {
+                respondida = true;
+                break;
+            }
+        }
+
+        if (!respondida) {
+            alert(`Debes responder la pregunta número ${i + 1} antes de finalizar el examen.`);
+            return;
+        }
+    }
+
+   
+    const preguntasSeleccionadas = obtenerPreguntasSeleccionadas(); 
+
+    Array.from(preguntas).forEach((preguntaCard, index) => {
+        const selectedOption = preguntaCard.querySelector('input[type="radio"]:checked');
+        const correctAnswer = preguntasSeleccionadas[index].respuesta;
+
+        const opciones = preguntaCard.querySelectorAll('input');
+        opciones.forEach(opcion => {
+            opcion.disabled = true;
+        });
+
+        if (selectedOption) {
+            if (parseInt(selectedOption.value) === correctAnswer) {
+                respuestasCorrectas++;
+                preguntaCard.style.backgroundColor = "green";
+                preguntaCard.style.color = "black";
+            } else {
+                preguntaCard.style.backgroundColor = "red";
+                preguntaCard.style.color = "black";
+            }
+        }
+    });
+
+    const puntajeTotal = Math.round((respuestasCorrectas / totalPreguntas) * 50);
     
     document.getElementById("resultNombre").innerText = nombreEstudiante;
     document.getElementById("resultDocumento").innerText = documentoEstudiante;
